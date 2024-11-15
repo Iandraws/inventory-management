@@ -1,56 +1,34 @@
-# Inventory Management System - Backend
-
+Inventory Management System - Backend
 This is the backend for the Inventory Management System, built with Spring Boot. It provides a RESTful API for managing inventory items, including functionality for creating, reading, updating, and deleting items. The backend connects to a PostgreSQL database and includes validation, pagination, sorting, and filtering capabilities.
 
-## Project Structure
+Project Setup Instructions
+Clone the Repository
+Clone this repository to your local machine.
 
-The backend code is located in the `server` directory and organized into standard Spring Boot packages:
+bash
+Code kopieren
+git clone <repository-url>
+Database Setup
+Make sure you have PostgreSQL installed and running. Create a database called inventorydb.
 
-- `controller/` - Contains REST API controllers.
-- `service/` - Contains the business logic layer.
-- `repository/` - Contains database interaction code using Spring Data JPA.
-- `model/` - Contains entity classes representing database tables.
-- `resources/` - Contains application configuration files (e.g., `application.properties`).
-
-## Prerequisites
-
-- Java 17 or higher
-- Maven
-- PostgreSQL
-
-## Setup Instructions
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/your-username/inventory-management.git
-   cd inventory-management/server
-Configure PostgreSQL Database
-
-Make sure PostgreSQL is installed and running. Create a database named inventorydb and update the database credentials in src/main/resources/application.properties:
+Configuration
+Update the application.properties file with your PostgreSQL credentials:
 
 properties
 Code kopieren
 spring.datasource.url=jdbc:postgresql://localhost:5432/inventorydb
-spring.datasource.username=your-username
-spring.datasource.password=your-password
-Build the Project
-
-Use Maven to build the project:
-
-bash
-Code kopieren
-mvn clean install
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
 Run the Application
-
-Start the Spring Boot application:
+Use the following command to start the Spring Boot application:
 
 bash
 Code kopieren
 mvn spring-boot:run
-The application will start on http://localhost:8080.
+Access the API
+Once the application is running, you can access the API at http://localhost:8080/api/inventory.
 
-API Endpoints
+API Structure
 Endpoints
 GET /api/inventory
 Retrieves a paginated list of inventory items, with optional query parameters for sorting, searching by name or sku, and filtering by category.
@@ -128,9 +106,9 @@ To run the tests, use the following command:
 bash
 Code kopieren
 mvn test
-Additional Notes
-Spring Boot: Version 3.3.5
-Java: 17
+Additional Information
+Spring Boot Version: 3.3.5
+Java Version: 17
 Database: PostgreSQL
 ORM: Spring Data JPA with dynamic query specifications
 Build Tool: Maven
