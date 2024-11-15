@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-function AddItemPage() {
+const AddItemPage: React.FC = () => {
   return (
-    <div>AddItemPage</div>
-  )
-}
+    <div>
+      <h1>Add New Inventory Item</h1>
+      
+    </div>
+  );
+};
 
-export default AddItemPage
+export default AddItemPage;

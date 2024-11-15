@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-function HomePage() {
+const HomePage: React.FC = () => {
   return (
-    <div>HomePage</div>
-  )
-}
+    <div>
+      <h1>Welcome to Inventory Management</h1>
+    </div>
+  );
+};
 
-export default HomePage
+export default HomePage;
