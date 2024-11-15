@@ -31,7 +31,7 @@ const InventoryPage: React.FC = () => {
     <Grid container spacing={2} padding={2}>
       {data.length > 0 ? (
         data.map((item: InventoryItem) => (
-          <Grid size={{ xs: 12,sm:6,md:4 }}>
+          <Grid size={{ xs: 12,sm:6,md:4 } }>
             <Card variant="outlined" sx={{ height: '100%' }}>
               <CardContent>
                 <Typography variant="h6" color="primary" gutterBottom>
