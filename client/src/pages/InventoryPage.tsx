@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getInventoryItems } from '../servives/inventoryService';
+import { getInventoryItems } from '../servives/inventoryService'
 import { InventoryItem } from '../types/inventoryTypes';
+import { Card, CardContent, Typography, CircularProgress } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 
 const InventoryPage: React.FC = () => {
   const [data, setData] = useState<InventoryItem[]>([]);
@@ -13,7 +15,7 @@ const InventoryPage: React.FC = () => {
         const response = await getInventoryItems();
         setData(response.data.content || []); 
       } catch (err: any) {
-        setError(err.message);
+        setError(err.message || 'An error occurred while fetching data.');
       } finally {
         setLoading(false);
       }
@@ -22,25 +24,41 @@ const InventoryPage: React.FC = () => {
     fetchData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <CircularProgress />;
+  if (error) return <Typography color="error">Error: {error}</Typography>;
 
   return (
-    <div>
+    <Grid container spacing={2} padding={2}>
       {data.length > 0 ? (
         data.map((item: InventoryItem) => (
-          <div key={item.id}>
-            <p>Name: {item.name}</p>
-            <p>SKU: {item.sku}</p>
-            <p>Quantity: {item.quantity}</p>
-            <p>Price: {item.price}</p>
-            <p>Category: {item.category}</p>
-          </div>
+          <Grid size={{ xs: 12,sm:6,md:4 }}>
+            <Card variant="outlined" sx={{ height: '100%' }}>
+              <CardContent>
+                <Typography variant="h6" color="primary" gutterBottom>
+                  {item.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  SKU: {item.sku}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Quantity: {item.quantity}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Price: ${item.price.toFixed(2)}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Category: {item.category}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         ))
       ) : (
-        <p>No items found</p>
+        <Typography variant="body1" color="textSecondary">
+          No items found
+        </Typography>
       )}
-    </div>
+    </Grid>
   );
 };
 
