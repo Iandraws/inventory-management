@@ -99,5 +99,3 @@ mvn test
 - Integrate WebSocket support for real-time updates.
 
 ---
-
-This README provides essential instructions and details about the backend part of the project. The frontend, once created, should be placed in a `client` directory and include its own setup instructions.
