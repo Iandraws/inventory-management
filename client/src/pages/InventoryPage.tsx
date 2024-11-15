@@ -1,9 +1,9 @@
-// src/pages/InventoryPage.tsx
 import React, { useEffect, useState } from 'react';
 import { getInventoryItems } from '../servives/inventoryService';
+import { InventoryItem } from '../types/inventoryTypes';
 
 const InventoryPage: React.FC = () => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -11,7 +11,7 @@ const InventoryPage: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await getInventoryItems();
-        setData(response.data);
+        setData(response.data.content || []); 
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -27,8 +27,8 @@ const InventoryPage: React.FC = () => {
 
   return (
     <div>
-      {data?.content?.length > 0 ? (
-        data.content.map((item: any) => (
+      {data.length > 0 ? (
+        data.map((item: InventoryItem) => (
           <div key={item.id}>
             <p>Name: {item.name}</p>
             <p>SKU: {item.sku}</p>
