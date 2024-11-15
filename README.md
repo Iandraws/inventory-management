@@ -14,8 +14,9 @@ A full-stack inventory management system developed using a Spring Boot backend a
 ### Setting Up the Project
 1. Clone the repository:
     ```bash
-    git clone <repository-url>
+    git clone <https://github.com/Iandraws/inventory-management>
     cd inventory-management
+    cd server
     ```
 
 2. Set up the PostgreSQL database. Update the `src/main/resources/application.properties` file with your database credentials:
