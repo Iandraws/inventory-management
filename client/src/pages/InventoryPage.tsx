@@ -11,15 +11,12 @@ import {
   CardContent,
   Typography,
   CircularProgress,
-  TextField,
   Box,
   Button,
-  IconButton,
-  
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import ItemForm from '../components/ItemForm';
 import Grid from '@mui/material/Grid2';
+import ItemForm from '../components/ItemForm';
+import SearchBar from '../components/SearchBar';
 
 const InventoryPage: React.FC = () => {
   const [data, setData] = useState<InventoryItem[]>([]);
@@ -115,70 +112,52 @@ const InventoryPage: React.FC = () => {
 
   return (
     <Box padding={2}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-        <TextField
-          label="Search"
-          variant="outlined"
-          size="small"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ width: '50%', maxWidth: 400 }}
-        />
-        <IconButton
-          onClick={openAddForm}
-          sx={{
-            backgroundColor: '#1976d2',
-            color: '#fff',
-            marginLeft: 2,
-            '&:hover': {
-              backgroundColor: '#115293',
-            },
-          }}
-        >
-          <AddIcon />
-        </IconButton>
-      </Box>
+      <SearchBar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onAddClick={openAddForm}
+      />
 
       <Grid container spacing={2}>
         {filteredData.length > 0 ? (
           filteredData.map((item) => (
             <Grid size={{ xs: 12,sm:6, md: 4 }}>
               <Card variant="outlined" sx={{ height: '100%' }}>
-  <CardContent>
-    <Typography variant="h6" color="primary" gutterBottom>
-      {item.name}
-    </Typography>
-    <Typography variant="body2" color="textSecondary">
-      SKU: {item.sku}
-    </Typography>
-    <Typography variant="body2" color="textSecondary">
-      Quantity: {item.quantity}
-    </Typography>
-    <Typography variant="body2" color="textSecondary">
-      Price: ${item.price.toFixed(2)}
-    </Typography>
-    <Typography variant="body2" color="textSecondary">
-      Category: {item.category}
-    </Typography>
-    <Box sx={{  display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => openEditForm(item)}
-        sx={{ marginRight: 1 }}
-      >
-        Edit
-      </Button>
-      <Button
-        variant="contained"
-        color="error"
-        onClick={() => handleDelete(item.id!)}
-      >
-        Delete
-      </Button>
-    </Box>
-  </CardContent>
-</Card>
+                <CardContent>
+                  <Typography variant="h6" color="primary" gutterBottom>
+                    {item.name}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    SKU: {item.sku}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Quantity: {item.quantity}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Price: ${item.price.toFixed(2)}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Category: {item.category}
+                  </Typography>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => openEditForm(item)}
+                      sx={{ marginRight: 1 }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleDelete(item.id!)}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
             </Grid>
           ))
         ) : (
@@ -189,15 +168,15 @@ const InventoryPage: React.FC = () => {
       </Grid>
 
       <ItemForm
-  open={dialogOpen}
-  onClose={() => {
-    setDialogOpen(false);
-    setCurrentItem(null); 
-  }}
-  onSubmit={handleAddOrEdit}
-  defaultValues={currentItem || undefined}
-  mode={formMode}
-/>
+        open={dialogOpen}
+        onClose={() => {
+          setDialogOpen(false);
+          setCurrentItem(null);
+        }}
+        onSubmit={handleAddOrEdit}
+        defaultValues={currentItem || undefined}
+        mode={formMode}
+      />
     </Box>
   );
 };
