@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -8,42 +8,48 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle,
-} from '@mui/material';
-import { InventoryItem } from '../types/inventoryTypes';
+} from "@mui/material";
+import { InventoryItem } from "../types/inventoryTypes";
 
 interface ItemFormProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (item: InventoryItem) => void;
   defaultValues?: Partial<InventoryItem>;
-  mode: 'add' | 'edit';
+  mode: "add" | "edit";
 }
 
-const ItemForm: React.FC<ItemFormProps> = ({ open, onClose, onSubmit, defaultValues, mode }) => {
+const ItemForm: React.FC<ItemFormProps> = ({
+  open,
+  onClose,
+  onSubmit,
+  defaultValues,
+  mode,
+}) => {
   const [formFields, setFormFields] = useState({
-    name: '',
-    sku: '',
-    quantity: '',
-    price: '',
-    category: '',
+    name: "",
+    sku: "",
+    quantity: "",
+    price: "",
+    category: "",
   });
 
   useEffect(() => {
-    if (mode === 'edit' && defaultValues) {
+    if (mode === "edit" && defaultValues) {
       setFormFields({
-        name: defaultValues.name || '',
-        sku: defaultValues.sku || '',
-        quantity: defaultValues.quantity?.toString() || '',
-        price: defaultValues.price?.toString() || '',
-        category: defaultValues.category || '',
+        name: defaultValues.name || "",
+        sku: defaultValues.sku || "",
+        quantity: defaultValues.quantity?.toString() || "",
+        price: defaultValues.price?.toString() || "",
+        category: defaultValues.category || "",
       });
     } else {
       setFormFields({
-        name: '',
-        sku: '',
-        quantity: '',
-        price: '',
-        category: '',
+        name: "",
+        sku: "",
+        quantity: "",
+        price: "",
+        category: "",
       });
     }
   }, [defaultValues, mode]);
@@ -68,9 +74,9 @@ const ItemForm: React.FC<ItemFormProps> = ({ open, onClose, onSubmit, defaultVal
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
-      <DialogTitle>{mode === 'add' ? 'Add New Item' : 'Edit Item'}</DialogTitle>
+      <DialogTitle>{mode === "add" ? "Add New Item" : "Edit Item"}</DialogTitle>
       <DialogContent>
-        {['name', 'sku', 'quantity', 'price', 'category'].map((field) => (
+        {["name", "sku", "quantity", "price", "category"].map((field) => (
           <TextField
             key={field}
             label={field.charAt(0).toUpperCase() + field.slice(1)}
@@ -79,7 +85,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ open, onClose, onSubmit, defaultVal
             fullWidth
             value={formFields[field as keyof typeof formFields]}
             onChange={handleInputChange}
-            type={['quantity', 'price'].includes(field) ? 'number' : 'text'}
+            type={["quantity", "price"].includes(field) ? "number" : "text"}
             sx={{ mb: 2 }}
           />
         ))}
@@ -89,11 +95,11 @@ const ItemForm: React.FC<ItemFormProps> = ({ open, onClose, onSubmit, defaultVal
           onClick={() => {
             onClose();
             setFormFields({
-              name: '',
-              sku: '',
-              quantity: '',
-              price: '',
-              category: '',
+              name: "",
+              sku: "",
+              quantity: "",
+              price: "",
+              category: "",
             });
           }}
           color="secondary"
@@ -102,7 +108,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ open, onClose, onSubmit, defaultVal
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="primary" variant="contained">
-          {mode === 'add' ? 'Add Item' : 'Save Changes'}
+          {mode === "add" ? "Add Item" : "Save Changes"}
         </Button>
       </DialogActions>
     </Dialog>
