@@ -2,12 +2,12 @@ package com.inventory.management.service;
 
 import com.inventory.management.model.InventoryItem;
 import com.inventory.management.repository.InventoryItemRepository;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.data.jpa.domain.Specification;
-
-import java.util.List;
+import com.inventory.management.model.InventoryItem;
+import com.inventory.management.repository.InventoryItemRepository;
 import java.util.Optional;
 
 @Service
@@ -21,35 +21,32 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Page<InventoryItem> getFilteredItems(String searchTerm, String category, Pageable pageable) {
-        if ((searchTerm == null || searchTerm.trim().isEmpty()) && (category == null || category.trim().isEmpty())) {
-            // No filters applied, return all items
-            return repository.findAll(pageable);
+        if ((searchTerm == null || searchTerm.trim().isEmpty()) &&
+                (category == null || category.trim().isEmpty())) {
+            return repository.findAll(pageable); // No filters applied, return all items
         }
 
-        if (category != null && !category.trim().isEmpty()) {
-            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
-                // Filter by searchTerm (name or SKU) and category
-                return repository.findByNameContainingIgnoreCaseOrSkuContainingIgnoreCaseAndCategory(
-                        searchTerm.trim(), searchTerm.trim(), category.trim(), pageable);
-            } else {
-                // Filter only by category
-                return repository.findByCategory(category.trim(), pageable);
+        if (category != null && !category.trim().isEmpty() &&
+                (searchTerm == null || searchTerm.trim().isEmpty())) {
+            // Only category filter is applied
+            return repository.findByCategoryContainingIgnoreCase(category.trim(), pageable);
+        }
+
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            // Exact match first
+            Page<InventoryItem> exactMatches = repository.findByNameIgnoreCase(searchTerm.trim(), pageable);
+            if (!exactMatches.isEmpty()) {
+                return exactMatches;
             }
+
+            // If no exact match is found, return partial matches
+            return repository.findByNameContainingIgnoreCaseOrSkuContainingIgnoreCase(
+                    searchTerm.trim(), searchTerm.trim(), pageable);
         }
 
-        // Filter only by searchTerm (name or SKU)
-        return repository.findByNameContainingIgnoreCaseOrSkuContainingIgnoreCase(
-                searchTerm.trim(), searchTerm.trim(), pageable);
-    }
-
-    @Override
-    public List<InventoryItem> getAllItems() {
-        return repository.findAll();
-    }
-
-    @Override
-    public Optional<InventoryItem> getItemById(Long id) {
-        return repository.findById(id);
+        // If both filters are applied
+        return repository.findByCategoryContainingIgnoreCaseAndNameContainingIgnoreCase(
+                category.trim(), searchTerm.trim(), pageable);
     }
 
     @Override
@@ -72,5 +69,10 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public void deleteItem(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<InventoryItem> getItemById(Long id) {
+        return repository.findById(id);
     }
 }
