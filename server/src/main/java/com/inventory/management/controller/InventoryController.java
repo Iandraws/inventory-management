@@ -24,11 +24,11 @@ public class InventoryController {
     // Pagination, sorting, and filtering for GET /api/inventory
     @GetMapping
     public Page<InventoryItem> getAllItems(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String sku,
+
+            @RequestParam(required = false) String searchTerm,
             @RequestParam(required = false) String category,
-            @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        return service.getFilteredItems(name, sku, category, pageable);
+            @PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
+        return service.getFilteredItems(searchTerm, category, pageable);
     }
 
     @GetMapping("/{id}")

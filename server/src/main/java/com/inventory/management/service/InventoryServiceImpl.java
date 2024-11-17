@@ -20,24 +20,26 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Page<InventoryItem> getFilteredItems(String name, String sku, String category, Pageable pageable) {
-        Specification<InventoryItem> spec = (root, query, criteriaBuilder) -> {
-            var predicates = criteriaBuilder.conjunction();
+    public Page<InventoryItem> getFilteredItems(String searchTerm, String category, Pageable pageable) {
+        if ((searchTerm == null || searchTerm.trim().isEmpty()) && (category == null || category.trim().isEmpty())) {
+            // No filters applied, return all items
+            return repository.findAll(pageable);
+        }
 
-            if (name != null && !name.isEmpty()) {
-                predicates = criteriaBuilder.and(predicates, criteriaBuilder.like(root.get("name"), "%" + name + "%"));
+        if (category != null && !category.trim().isEmpty()) {
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                // Filter by searchTerm (name or SKU) and category
+                return repository.findByNameContainingIgnoreCaseOrSkuContainingIgnoreCaseAndCategory(
+                        searchTerm.trim(), searchTerm.trim(), category.trim(), pageable);
+            } else {
+                // Filter only by category
+                return repository.findByCategory(category.trim(), pageable);
             }
-            if (sku != null && !sku.isEmpty()) {
-                predicates = criteriaBuilder.and(predicates, criteriaBuilder.like(root.get("sku"), "%" + sku + "%"));
-            }
-            if (category != null && !category.isEmpty()) {
-                predicates = criteriaBuilder.and(predicates, criteriaBuilder.equal(root.get("category"), category));
-            }
+        }
 
-            return predicates;
-        };
-
-        return repository.findAll(Specification.where(spec), pageable);
+        // Filter only by searchTerm (name or SKU)
+        return repository.findByNameContainingIgnoreCaseOrSkuContainingIgnoreCase(
+                searchTerm.trim(), searchTerm.trim(), pageable);
     }
 
     @Override

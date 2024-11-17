@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface InventoryService {
-    Page<InventoryItem> getFilteredItems(String name, String sku, String category, Pageable pageable);
+    Page<InventoryItem> getFilteredItems(String searchTerm, String category, Pageable pageable);
 
     List<InventoryItem> getAllItems();
 
