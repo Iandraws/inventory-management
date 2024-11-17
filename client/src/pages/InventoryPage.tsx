@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Box,
   CircularProgress,
@@ -28,7 +28,7 @@ const InventoryPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize] = useState(9); 
+  const [pageSize] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
   const [sortField, setSortField] = useState("name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -40,30 +40,47 @@ const InventoryPage: React.FC = () => {
     null
   );
 
-  // Fetch data from the backend
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await getInventoryItems({
-          searchTerm: searchQuery,
-          category: categoryFilter,
-          page: currentPage,
-          size: pageSize,
-          sort: `${sortField},${sortOrder}`,
-        });
+  // Ref for debounce
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
-        const items = response.data.content || [];
-        setData(items);
-        setTotalPages(response.data.totalPages);
-      } catch (err: any) {
-        setError(err.message || 'An error occurred while fetching data.');
-      } finally {
-        setLoading(false);
+  // Function to fetch data
+  const fetchData = async (searchTerm: string,category: string,page:number,size:number,sortField:string,sortOrder:string) => {
+    setLoading(true);
+    try {
+      const response = await getInventoryItems({
+        searchTerm,
+        category ,
+        page ,
+        size ,
+        sort: `${sortField},${sortOrder}`,
+      });
+
+      const items = response.data.content || [];
+      setData(items);
+      setTotalPages(response.data.totalPages);
+    } catch (err: any) {
+      setError(err.message || "An error occurred while fetching data.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Debounced search effect
+  useEffect(() => {
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    debounceTimeout.current = setTimeout(() => {
+      fetchData(searchQuery, categoryFilter, currentPage, pageSize, sortField, sortOrder);
+    }, 300); 
+
+    // Cleanup on unmount or when dependencies change
+    return () => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
       }
     };
-
-    fetchData();
   }, [searchQuery, categoryFilter, currentPage, pageSize, sortField, sortOrder]);
 
   const handleDelete = async (id: number) => {

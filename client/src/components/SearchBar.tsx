@@ -61,6 +61,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <MenuItem value="Electronics">Electronics</MenuItem>
         <MenuItem value="Books">Books</MenuItem>
         <MenuItem value="Clothing">Clothing</MenuItem>
+        <MenuItem value="Furniture">Furniture</MenuItem>
+        <MenuItem value="Appliances">Appliances</MenuItem>
       </TextField>
 
       {/* Add Item Button */}
