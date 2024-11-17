@@ -44,14 +44,21 @@ const InventoryPage: React.FC = () => {
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Function to fetch data
-  const fetchData = async (searchTerm: string,category: string,page:number,size:number,sortField:string,sortOrder:string) => {
+  const fetchData = async (
+    searchTerm: string,
+    category: string,
+    page: number,
+    size: number,
+    sortField: string,
+    sortOrder: string
+  ) => {
     setLoading(true);
     try {
       const response = await getInventoryItems({
         searchTerm,
-        category ,
-        page ,
-        size ,
+        category,
+        page,
+        size,
         sort: `${sortField},${sortOrder}`,
       });
 
@@ -72,8 +79,15 @@ const InventoryPage: React.FC = () => {
     }
 
     debounceTimeout.current = setTimeout(() => {
-      fetchData(searchQuery, categoryFilter, currentPage, pageSize, sortField, sortOrder);
-    }, 300); 
+      fetchData(
+        searchQuery,
+        categoryFilter,
+        currentPage,
+        pageSize,
+        sortField,
+        sortOrder
+      );
+    }, 300);
 
     // Cleanup on unmount or when dependencies change
     return () => {
@@ -81,7 +95,14 @@ const InventoryPage: React.FC = () => {
         clearTimeout(debounceTimeout.current);
       }
     };
-  }, [searchQuery, categoryFilter, currentPage, pageSize, sortField, sortOrder]);
+  }, [
+    searchQuery,
+    categoryFilter,
+    currentPage,
+    pageSize,
+    sortField,
+    sortOrder,
+  ]);
 
   const handleDelete = async (id: number) => {
     try {
@@ -161,9 +182,15 @@ const InventoryPage: React.FC = () => {
       >
         <SearchBar
           searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          onSearchChange={(value) => {
+            setCurrentPage(0);
+            setSearchQuery(value);
+          }}
           categoryFilter={categoryFilter}
-          onCategoryChange={setCategoryFilter}
+          onCategoryChange={(value) => {
+            setCurrentPage(0);
+            setCategoryFilter(value);
+          }}
           onAddClick={openAddForm}
         />
       </Box>
