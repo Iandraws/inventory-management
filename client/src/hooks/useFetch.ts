@@ -1,6 +1,6 @@
-// src/hooks/useFetch.ts
+
 import { useState, useEffect } from 'react';
-import axiosInstance from '../servives/axiosInstance';
+import axiosInstance from '../services/axiosInstance';
 
 const useFetch = (endpoint: string) => {
   const [data, setData] = useState(null);
