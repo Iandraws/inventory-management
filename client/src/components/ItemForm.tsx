@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle,
+  Box,
 } from "@mui/material";
 import { InventoryItem } from "../types/inventoryTypes";
 
@@ -89,25 +90,27 @@ const ItemForm: React.FC<ItemFormProps> = ({
         ))}
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={() => {
-            onClose();
-            setFormFields({
-              name: "",
-              sku: "",
-              quantity: "",
-              price: "",
-              category: "",
-            });
-          }}
-          color="secondary"
-          variant="outlined"
-        >
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} color="primary" variant="contained">
-          {mode === "add" ? "Add Item" : "Save Changes"}
-        </Button>
+        <Box sx={{ flex: 1, display: "flex", justifyContent: "space-between" }}>
+          <Button
+            onClick={() => {
+              onClose();
+              setFormFields({
+                name: "",
+                sku: "",
+                quantity: "",
+                price: "",
+                category: "",
+              });
+            }}
+            color="secondary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit} color="primary" variant="contained">
+            {mode === "add" ? "Add Item" : "Save Changes"}
+          </Button>
+        </Box>
       </DialogActions>
     </Dialog>
   );

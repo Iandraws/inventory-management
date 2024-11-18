@@ -89,7 +89,6 @@ const InventoryPage: React.FC = () => {
       );
     }, 300);
 
-    // Cleanup on unmount or when dependencies change
     return () => {
       if (debounceTimeout.current) {
         clearTimeout(debounceTimeout.current);
@@ -153,7 +152,7 @@ const InventoryPage: React.FC = () => {
     event: React.ChangeEvent<unknown>,
     page: number
   ) => {
-    setCurrentPage(page - 1); // Convert 1-based index to 0-based
+    setCurrentPage(page - 1);
   };
 
   const closeSnackbar = () => {
@@ -190,6 +189,16 @@ const InventoryPage: React.FC = () => {
           onCategoryChange={(value) => {
             setCurrentPage(0);
             setCategoryFilter(value);
+          }}
+          sortField={sortField}
+          onSortChange={(value) => {
+            setCurrentPage(0);
+            setSortField(value);
+          }}
+          sortOrder={sortOrder}
+          onOrderChange={(value) => {
+            setCurrentPage(0);
+            setSortOrder(value);
           }}
           onAddClick={openAddForm}
         />

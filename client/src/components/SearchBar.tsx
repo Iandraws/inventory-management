@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, TextField, Button, MenuItem } from "@mui/material";
+import { Box, TextField, Button, MenuItem, FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 interface SearchBarProps {
@@ -7,6 +7,10 @@ interface SearchBarProps {
   onSearchChange: React.Dispatch<React.SetStateAction<string>>;
   categoryFilter: string;
   onCategoryChange: React.Dispatch<React.SetStateAction<string>>;
+  sortField: string;
+  onSortChange: React.Dispatch<React.SetStateAction<string>>;
+  sortOrder: "asc" | "desc";
+  onOrderChange: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
   onAddClick: () => void;
 }
 
@@ -15,6 +19,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onSearchChange,
   categoryFilter,
   onCategoryChange,
+  sortField,
+  onSortChange,
+  sortOrder,
+  onOrderChange,
   onAddClick,
 }) => {
   return (
@@ -24,6 +32,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         alignItems: "center",
         justifyContent: "center",
         gap: 2,
+        flexWrap: "wrap",
         mb: 3,
         p: 2,
         border: "1px solid #ccc",
@@ -53,8 +62,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         variant="outlined"
         sx={{
           flex: "1",
-          maxWidth: "120px",
-          minWidth: "120px",
+          maxWidth: "200px",
+          minWidth: "150px",
         }}
       >
         <MenuItem value="">All Categories</MenuItem>
@@ -65,28 +74,55 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <MenuItem value="Appliances">Appliances</MenuItem>
       </TextField>
 
+      {/* Sort By Dropdown */}
+      <FormControl size="small" sx={{ minWidth: "75px" }}>
+        <InputLabel>Sort By</InputLabel>
+        <Select
+          value={sortField}
+          onChange={(e: SelectChangeEvent<string>) => onSortChange(e.target.value)}
+          label="Sort By"
+        >
+          <MenuItem value="name">Name</MenuItem>
+          <MenuItem value="price">Price</MenuItem>
+          <MenuItem value="category">Category</MenuItem>
+          <MenuItem value="quantity">Quantity</MenuItem>
+        </Select>
+      </FormControl>
+
+      {/* Sort Order Dropdown */}
+      <FormControl size="small" sx={{ minWidth: "75px" }}>
+        <InputLabel>Order</InputLabel>
+        <Select
+          value={sortOrder}
+          onChange={(e: SelectChangeEvent<"asc" | "desc">) => onOrderChange(e.target.value as "asc" | "desc")}
+          label="Order"
+        >
+          <MenuItem value="asc">Asc</MenuItem>
+          <MenuItem value="desc">Desc</MenuItem>
+        </Select>
+      </FormControl>
+
       {/* Add Item Button */}
       <Button
-  variant="contained"
-  color="primary"
-  onClick={onAddClick}
-  sx={{
-    borderRadius: '50%', // Makes the button circular
-    width: '50px', // Adjust the width
-    height: '50px', // Adjust the height
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: 0, // Remove the default min-width
-    backgroundColor: "#1976d2",
-    "&:hover": {
-      backgroundColor: "#115293",
-    },
-  }}
->
-  <AddIcon />
-</Button>
-
+        variant="contained"
+        color="primary"
+        onClick={onAddClick}
+        sx={{
+          borderRadius: "50%",
+          width: "50px",
+          height: "50px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minWidth: 0,
+          backgroundColor: "#1976d2",
+          "&:hover": {
+            backgroundColor: "#115293",
+          },
+        }}
+      >
+        <AddIcon />
+      </Button>
     </Box>
   );
 };
