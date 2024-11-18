@@ -2,12 +2,12 @@ package com.inventory.management.service;
 
 import com.inventory.management.model.InventoryItem;
 import com.inventory.management.repository.InventoryItemRepository;
-
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import com.inventory.management.model.InventoryItem;
-import com.inventory.management.repository.InventoryItemRepository;
+
 import java.util.Optional;
 
 @Service
@@ -20,33 +20,37 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Page<InventoryItem> getFilteredItems(String searchTerm, String category, Pageable pageable) {
+    public Page<InventoryItem> getFilteredItems(String searchTerm, String category, Pageable pageable, String sortField,
+            String sortOrder) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
         if ((searchTerm == null || searchTerm.trim().isEmpty()) &&
                 (category == null || category.trim().isEmpty())) {
-            return repository.findAll(pageable); // No filters applied, return all items
+            return repository.findAll(sortedPageable); // No filters applied, return all items
         }
 
         if (category != null && !category.trim().isEmpty() &&
                 (searchTerm == null || searchTerm.trim().isEmpty())) {
             // Only category filter is applied
-            return repository.findByCategoryContainingIgnoreCase(category.trim(), pageable);
+            return repository.findByCategoryContainingIgnoreCase(category.trim(), sortedPageable);
         }
 
         if (searchTerm != null && !searchTerm.trim().isEmpty()) {
             // Exact match first
-            Page<InventoryItem> exactMatches = repository.findByNameIgnoreCase(searchTerm.trim(), pageable);
+            Page<InventoryItem> exactMatches = repository.findByNameIgnoreCase(searchTerm.trim(), sortedPageable);
             if (!exactMatches.isEmpty()) {
                 return exactMatches;
             }
 
             // If no exact match is found, return partial matches
             return repository.findByNameContainingIgnoreCaseOrSkuContainingIgnoreCase(
-                    searchTerm.trim(), searchTerm.trim(), pageable);
+                    searchTerm.trim(), searchTerm.trim(), sortedPageable);
         }
 
         // If both filters are applied
         return repository.findByCategoryContainingIgnoreCaseAndNameContainingIgnoreCase(
-                category.trim(), searchTerm.trim(), pageable);
+                category.trim(), searchTerm.trim(), sortedPageable);
     }
 
     @Override

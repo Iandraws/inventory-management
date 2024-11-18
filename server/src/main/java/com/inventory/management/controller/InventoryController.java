@@ -4,7 +4,6 @@ import com.inventory.management.model.InventoryItem;
 import com.inventory.management.service.InventoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +23,12 @@ public class InventoryController {
     // Pagination, sorting, and filtering for GET /api/inventory
     @GetMapping
     public Page<InventoryItem> getAllItems(
-
             @RequestParam(required = false) String searchTerm,
             @RequestParam(required = false) String category,
-            @PageableDefault(size = 20, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        return service.getFilteredItems(searchTerm, category, pageable);
+            @RequestParam(required = false, defaultValue = "name") String sortField,
+            @RequestParam(required = false, defaultValue = "asc") String sortOrder,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return service.getFilteredItems(searchTerm, category, pageable, sortField, sortOrder);
     }
 
     @GetMapping("/{id}")
