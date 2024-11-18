@@ -76,53 +76,62 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
       {/* Sort By Dropdown */}
       <FormControl size="small" sx={{ minWidth: "75px" }}>
-        <InputLabel>Sort By</InputLabel>
-        <Select
-          value={sortField}
-          onChange={(e: SelectChangeEvent<string>) => onSortChange(e.target.value)}
-          label="Sort By"
-        >
-          <MenuItem value="name">Name</MenuItem>
-          <MenuItem value="price">Price</MenuItem>
-          <MenuItem value="category">Category</MenuItem>
-          <MenuItem value="quantity">Quantity</MenuItem>
-        </Select>
-      </FormControl>
+  <InputLabel id="sort-by-label">Sort By</InputLabel>
+  <Select
+    labelId="sort-by-label"
+    value={sortField}
+    onChange={(e: SelectChangeEvent<string>) => onSortChange(e.target.value)}
+    label="Sort By"
+  >
+    <MenuItem value="name">Name</MenuItem>
+    <MenuItem value="price">Price</MenuItem>
+    <MenuItem value="category">Category</MenuItem>
+    <MenuItem value="quantity">Quantity</MenuItem>
+  </Select>
+</FormControl>
 
-      {/* Sort Order Dropdown */}
-      <FormControl size="small" sx={{ minWidth: "75px" }}>
-        <InputLabel>Order</InputLabel>
-        <Select
-          value={sortOrder}
-          onChange={(e: SelectChangeEvent<"asc" | "desc">) => onOrderChange(e.target.value as "asc" | "desc")}
-          label="Order"
-        >
-          <MenuItem value="asc">Asc</MenuItem>
-          <MenuItem value="desc">Desc</MenuItem>
-        </Select>
-      </FormControl>
+
+<FormControl size="small">
+  <InputLabel id="order-label">Order</InputLabel>
+  <Select
+    labelId="order-label"
+    value={sortOrder}
+    onChange={(e: SelectChangeEvent<"asc" | "desc">) =>
+      onOrderChange(e.target.value as "asc" | "desc")
+    }
+    label="Order"
+  >
+    <MenuItem value="asc">Ascending</MenuItem>
+    <MenuItem value="desc">Descending</MenuItem>
+  </Select>
+</FormControl>
+
 
       {/* Add Item Button */}
       <Button
-        variant="contained"
-        color="primary"
-        onClick={onAddClick}
-        sx={{
-          borderRadius: "50%",
-          width: "50px",
-          height: "50px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minWidth: 0,
-          backgroundColor: "#1976d2",
-          "&:hover": {
-            backgroundColor: "#115293",
-          },
-        }}
-      >
-        <AddIcon />
-      </Button>
+  variant="contained"
+  color="primary"
+  onClick={onAddClick}
+  aria-label="Add"
+  data-testid="add-button"
+  sx={{
+    borderRadius: "50%",
+    width: "50px",
+    height: "50px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    minWidth: 0,
+    backgroundColor: "#1976d2",
+    "&:hover": {
+      backgroundColor: "#115293",
+    },
+  }}
+>
+  <AddIcon />
+</Button>
+
+
     </Box>
   );
 };

@@ -36,9 +36,7 @@ const InventoryPage: React.FC = () => {
   // Dialog and form states
   const [dialogOpen, setDialogOpen] = useState(false);
   const [formMode, setFormMode] = useState<"add" | "edit">("add");
-  const [currentItem, setCurrentItem] = useState<Partial<InventoryItem> | null>(
-    null
-  );
+  const [currentItem, setCurrentItem] = useState<Partial<InventoryItem> | null>(null);
 
   // Ref for debounce
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -59,9 +57,10 @@ const InventoryPage: React.FC = () => {
         category,
         page,
         size,
-        sort: `${sortField},${sortOrder}`,
+        sortField, 
+        sortOrder,  
       });
-
+  
       const items = response.data.content || [];
       setData(items);
       setTotalPages(response.data.totalPages);
@@ -71,7 +70,6 @@ const InventoryPage: React.FC = () => {
       setLoading(false);
     }
   };
-
   // Debounced search effect
   useEffect(() => {
     if (debounceTimeout.current) {
@@ -222,11 +220,21 @@ const InventoryPage: React.FC = () => {
             {error}
           </Typography>
         ) : (
-          <InventoryTable
-            data={data}
-            onEdit={openEditForm}
-            onDelete={handleDelete}
-          />
+<InventoryTable
+  data={data}
+  onEdit={openEditForm}
+  onDelete={handleDelete}
+  sortField={sortField}
+  sortOrder={sortOrder}
+  onSortChange={(field) => {
+    setSortField(field);
+    setCurrentPage(0); // Reset page to the first page when sorting changes
+  }}
+  onOrderChange={(order) => {
+    setSortOrder(order);
+    setCurrentPage(0); // Reset page to the first page when sorting changes
+  }}
+/>
         )}
       </Box>
 

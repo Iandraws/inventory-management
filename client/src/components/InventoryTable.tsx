@@ -10,6 +10,7 @@ import {
   Paper,
   Button,
   Typography,
+  TableSortLabel,
 } from "@mui/material";
 import { InventoryItem } from "../types/inventoryTypes";
 
@@ -24,6 +25,10 @@ interface InventoryTableProps {
   data: InventoryItem[];
   onEdit: (item: InventoryItem) => void;
   onDelete: (id: number) => void;
+  sortField: string;
+  sortOrder: "asc" | "desc";
+  onSortChange: (field: string) => void;
+  onOrderChange: (order: "asc" | "desc") => void;
 }
 
 const categoryImages: Record<string, string> = {
@@ -34,7 +39,27 @@ const categoryImages: Record<string, string> = {
   Furniture: FurnitureImage,
 };
 
-const InventoryTable: React.FC<InventoryTableProps> = ({ data, onEdit, onDelete }) => {
+const InventoryTable: React.FC<InventoryTableProps> = ({
+  data,
+  onEdit,
+  onDelete,
+  sortField,
+  sortOrder,
+  onSortChange,
+  onOrderChange,
+}) => {
+  // Handle sort click
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      // Toggle between ascending and descending if the same field is clicked
+      onOrderChange(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      // Set new sort field and default to ascending order
+      onSortChange(field);
+      onOrderChange("asc");
+    }
+  };
+
   return (
     <TableContainer
       component={Paper}
@@ -49,11 +74,42 @@ const InventoryTable: React.FC<InventoryTableProps> = ({ data, onEdit, onDelete 
         <TableHead sx={{ backgroundColor: "#1976d2" }}>
           <TableRow>
             <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Image</TableCell>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Name</TableCell>
+            <TableCell
+              sx={{ color: "#fff", fontWeight: "bold" }}
+              sortDirection={sortField === "name" ? sortOrder : false}
+            >
+              <TableSortLabel
+                active={sortField === "name"}
+                direction={sortField === "name" ? sortOrder : "asc"}
+                onClick={() => handleSort("name")}
+              >
+                Name
+              </TableSortLabel>
+            </TableCell>
             <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>SKU</TableCell>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Quantity</TableCell>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold", textAlign: "right" }}>
-              Price
+            <TableCell
+              sx={{ color: "#fff", fontWeight: "bold" }}
+              sortDirection={sortField === "quantity" ? sortOrder : false}
+            >
+              <TableSortLabel
+                active={sortField === "quantity"}
+                direction={sortField === "quantity" ? sortOrder : "asc"}
+                onClick={() => handleSort("quantity")}
+              >
+                Quantity
+              </TableSortLabel>
+            </TableCell>
+            <TableCell
+              sx={{ color: "#fff", fontWeight: "bold", textAlign: "right" }}
+              sortDirection={sortField === "price" ? sortOrder : false}
+            >
+              <TableSortLabel
+                active={sortField === "price"}
+                direction={sortField === "price" ? sortOrder : "asc"}
+                onClick={() => handleSort("price")}
+              >
+                Price
+              </TableSortLabel>
             </TableCell>
             <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Category</TableCell>
             <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>Actions</TableCell>
@@ -70,7 +126,10 @@ const InventoryTable: React.FC<InventoryTableProps> = ({ data, onEdit, onDelete 
             >
               <TableCell>
                 <img
-                  src={categoryImages[item.category] || "https://via.placeholder.com/100?text=No+Image"}
+                  src={
+                    categoryImages[item.category] ||
+                    "https://via.placeholder.com/100?text=No+Image"
+                  }
                   alt={item.category}
                   style={{
                     width: "80px",
