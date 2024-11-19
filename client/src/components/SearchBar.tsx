@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, TextField, Button, MenuItem, FormControl, InputLabel, Select, SelectChangeEvent,Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import React from "react";
 
 interface SearchBarProps {
   searchQuery: string;
