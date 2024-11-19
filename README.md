@@ -61,7 +61,6 @@ The backend provides a RESTful API with the following endpoints:
 - **Spring Boot**: Chosen for its ease of use and robust ecosystem.
 - **Spring Data JPA**: Used to handle dynamic queries and simplify database access.
 - **Validation**: Implemented using `javax.validation` annotations for input data integrity.
-- **Exception Handling**: Centralized exception handling ensures user-friendly error messages.
 
 ### Challenges
 - Implementing dynamic filtering and sorting for complex queries.
@@ -70,8 +69,7 @@ The backend provides a RESTful API with the following endpoints:
 ### Testing
 - **Unit Tests**: Test service-layer business logic, validation, and exception handling.
 - **Integration Tests**: Verify the API endpoints and database interactions.
-- **Added unit tests for the front end**: focusing on individual React components, event handling, and rendering logic.
-, 
+  
 
 
 To run the tests:
@@ -114,8 +112,10 @@ mvn test
 ### Libraries Used
 - **React with TypeScript**: For building scalable and maintainable UI components.
 - **Material-UI**: For a consistent, responsive, and accessible design.
-- **Axios**: For API communication.
-- **React-Query**: For managing server state efficiently.
+-  **Axios with axiosInstance**: For API communication. Centralized in a reusable `axiosInstance` for consistent base URL, headers, and error handling.
+
+### Testing
+** unit tests**: focusing on individual React components, event handling, and rendering logic.
 
 ### Challenges
 - Implementing efficient state management and form validation.
@@ -169,4 +169,3 @@ DELETE /api/inventory/1
 
 ---
 
-This project serves as a foundation for building modern full-stack applications with a focus on scalability, maintainability, and usability.
