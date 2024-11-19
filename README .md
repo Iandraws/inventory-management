@@ -65,11 +65,14 @@ The backend provides a RESTful API with the following endpoints:
 
 ### Challenges
 - Implementing dynamic filtering and sorting for complex queries.
-- Ensuring robust validation and meaningful error messages for API clients.
+
 
 ### Testing
 - **Unit Tests**: Test service-layer business logic, validation, and exception handling.
 - **Integration Tests**: Verify the API endpoints and database interactions.
+- **Added unit tests for the front end**: focusing on individual React components, event handling, and rendering logic.
+, 
+
 
 To run the tests:
 ```bash
