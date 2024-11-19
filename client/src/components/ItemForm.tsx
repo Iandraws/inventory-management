@@ -8,15 +8,9 @@ import {
   DialogTitle,
   Box,
 } from "@mui/material";
-import { InventoryItem } from "../types/inventoryTypes";
+import { InventoryItem,ItemFormProps } from "../types/inventoryTypes";
 
-interface ItemFormProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (item: InventoryItem) => void;
-  defaultValues?: Partial<InventoryItem>;
-  mode: "add" | "edit";
-}
+
 
 const ItemForm: React.FC<ItemFormProps> = ({
   open,

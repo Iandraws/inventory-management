@@ -1,4 +1,3 @@
-
 package com.inventory.management.config;
 
 import org.springframework.context.annotation.Bean;
@@ -14,7 +13,10 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:3000") // React app URL
+                        .allowedOrigins(
+                                "http://localhost:3000", // React app local URL
+                                "https://inventory.codebyibrahim.com" // Deployed React app URL
+                )
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true);
