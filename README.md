@@ -115,7 +115,7 @@ mvn test
 -  **Axios with axiosInstance**: For API communication. Centralized in a reusable `axiosInstance` for consistent base URL, headers, and error handling.
 
 ### Testing
-** unit tests**: focusing on individual React components, event handling, and rendering logic.
+- ** unit tests**: focusing on individual React components, event handling, and rendering logic.
 
 ### Challenges
 - Implementing efficient state management and form validation.
