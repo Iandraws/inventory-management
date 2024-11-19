@@ -28,6 +28,20 @@ public class InventoryItem {
     @NotBlank(message = "Category is mandatory")
     private String category;
 
+    // Default constructor
+    public InventoryItem() {
+    }
+
+    // Parameterized constructor for convenience
+    public InventoryItem(Long id, String name, String sku, Integer quantity, Double price, String category) {
+        this.id = id;
+        this.name = name;
+        this.sku = sku;
+        this.quantity = quantity;
+        this.price = price;
+        this.category = category;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;

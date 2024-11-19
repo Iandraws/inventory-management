@@ -11,25 +11,24 @@ import {
   Button,
   Typography,
   TableSortLabel,
+  useMediaQuery,
+  useTheme,
+  Card,
+  CardContent,
+  CardActions,
 } from "@mui/material";
 import { InventoryItem } from "../types/inventoryTypes";
+import {InventoryTableProps} from "../types/inventoryTypes"
 
-// Import your images
+
+
 import BooksImage from "../assets/Books.jpg";
 import ClothingImage from "../assets/Clothing.jpg";
 import ElectronicsImage from "../assets/Electronics.jpg";
 import AppliancesImage from "../assets/Appliances.jpg";
 import FurnitureImage from "../assets/Furniture.jpg";
 
-interface InventoryTableProps {
-  data: InventoryItem[];
-  onEdit: (item: InventoryItem) => void;
-  onDelete: (id: number) => void;
-  sortField: string;
-  sortOrder: "asc" | "desc";
-  onSortChange: (field: string) => void;
-  onOrderChange: (order: "asc" | "desc") => void;
-}
+
 
 const categoryImages: Record<string, string> = {
   Books: BooksImage,
@@ -48,18 +47,74 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
   onSortChange,
   onOrderChange,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   // Handle sort click
   const handleSort = (field: string) => {
     if (sortField === field) {
-      // Toggle between ascending and descending if the same field is clicked
       onOrderChange(sortOrder === "asc" ? "desc" : "asc");
     } else {
-      // Set new sort field and default to ascending order
       onSortChange(field);
       onOrderChange("asc");
     }
   };
 
+  if (isMobile) {
+    // Render card layout for mobile
+    return (
+      <Box sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2 }}>
+        {data.map((item) => (
+          <Card key={item.id} sx={{ borderRadius: 2, boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" }}>
+            <CardContent>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <img
+                  src={
+                    categoryImages[item.category] ||
+                    "https://via.placeholder.com/100?text=No+Image"
+                  }
+                  alt={item.category}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    borderRadius: "4px",
+                    objectFit: "cover",
+                  }}
+                />
+                <Box>
+                  <Typography variant="h6" fontWeight="bold">
+                    {item.name}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    SKU: {item.sku}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Quantity: {item.quantity}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Price: {item.price.toFixed(2)} $
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Category: {item.category}
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+            <CardActions>
+              <Button variant="contained" color="primary" size="small" onClick={() => onEdit(item)}>
+                Edit
+              </Button>
+              <Button variant="contained" color="error" size="small" onClick={() => onDelete(item.id!)}>
+                Delete
+              </Button>
+            </CardActions>
+          </Card>
+        ))}
+      </Box>
+    );
+  }
+
+  // Render table layout for larger screens
   return (
     <TableContainer
       component={Paper}

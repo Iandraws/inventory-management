@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, TextField, Button, MenuItem, FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material";
+import { Box, TextField, Button, MenuItem, FormControl, InputLabel, Select, SelectChangeEvent,Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 interface SearchBarProps {
@@ -39,7 +39,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
         borderRadius: "8px",
         backgroundColor: "#f9f9f9",
       }}
+    
     >
+
       {/* Search Field */}
       <TextField
         label="Search"
